@@ -6,23 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <Button
+        android:id="@+id/addAccount"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_orange_light"
+        android:text="@string/addButton" />
 
-        <Button
-            android:id="@+id/addAccount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/holo_orange_light"
-            android:text="@string/addButton"
-            android:onClick="addButton" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/accountList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+    <ListView
+        android:id="@+id/accountList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </android.support.constraint.ConstraintLayout>
