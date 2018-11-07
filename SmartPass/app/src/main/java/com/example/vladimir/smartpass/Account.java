@@ -1,63 +1,35 @@
 package com.example.vladimir.smartpass;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 public class Account {
-    private int Id;
-    private String SiteAddress;
-    private String SiteName;
-    private String Description;
-    private String Login;
-    private String Password;
+    private SmartPassDBHelper dbHelper;
+    private SQLiteDatabase database;
 
-    public Account(int id, String siteAddress, String siteName, String description, String login, String password) {
-        Id = id;
-        SiteAddress = siteAddress;
-        SiteName = siteName;
-        Description = description;
-        Login = login;
-        Password = password;
+    public Account(Context context){
+        dbHelper = new SmartPassDBHelper(context);
+        database = dbHelper.getWritableDatabase();
     }
 
-    public int getId() {
-        return Id;
+    public long createRecords(String siteAddress, String siteName, String description, String login, String pass){
+        ContentValues values = new ContentValues();
+        values.put(dbHelper.SITE_ADDRESS, siteAddress);
+        values.put(dbHelper.SITE_NAME, siteName);
+        values.put(dbHelper.DESCRIPTION, description);
+        values.put(dbHelper.LOGIN, login);
+        values.put(dbHelper.PASS, pass);
+        return database.insert(dbHelper.TABLE_NAME, null, values);
     }
 
-    public String getSiteAdress() {
-        return SiteAddress;
-    }
-
-    public void setSiteAdress(String siteAddress) {
-        SiteAddress = siteAddress;
-    }
-
-    public String getSiteName() {
-        return SiteName;
-    }
-
-    public void setSiteName(String siteName) {
-        SiteName = siteName;
-    }
-
-    public String getDescription() {
-        return Description;
-    }
-
-    public void setDescription(String description) {
-        Description = description;
-    }
-
-    public String getLogin() {
-        return Login;
-    }
-
-    public void setLogin(String login) {
-        Login = login;
-    }
-
-    public String getPassword() {
-        return Password;
-    }
-
-    public void setPassword(String password) {
-        Password = password;
+    public Cursor selectSiteNames(){
+        String[] cols = new String[] {dbHelper.SITE_NAME};
+        Cursor cursor = database.query(true, dbHelper.TABLE_NAME, cols, null, null, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
     }
 }
