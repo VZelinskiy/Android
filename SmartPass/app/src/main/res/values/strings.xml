@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SmartPass</string>
+    <string name="addButton">Добавить аккаунт</string>
 </resources>

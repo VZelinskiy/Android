@@ -1,26 +1,32 @@
 package com.example.vladimir.smartpass;
 
 public class Account {
-    private String SiteAdress;
+    private int Id;
+    private String SiteAddress;
     private String SiteName;
     private String Description;
     private String Login;
     private String Password;
 
-    public Account(String siteAdress, String siteName, String description, String login, String password) {
-        SiteAdress = siteAdress;
+    public Account(int id, String siteAddress, String siteName, String description, String login, String password) {
+        Id = id;
+        SiteAddress = siteAddress;
         SiteName = siteName;
         Description = description;
         Login = login;
         Password = password;
     }
 
-    public String getSiteAdress() {
-        return SiteAdress;
+    public int getId() {
+        return Id;
     }
 
-    public void setSiteAdress(String siteAdress) {
-        SiteAdress = siteAdress;
+    public String getSiteAdress() {
+        return SiteAddress;
+    }
+
+    public void setSiteAdress(String siteAddress) {
+        SiteAddress = siteAddress;
     }
 
     public String getSiteName() {
