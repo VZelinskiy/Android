@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
             android:text="@string/addButton"
-            tools:onClick="addButton" />
+            android:onClick="addButton" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/accountList"

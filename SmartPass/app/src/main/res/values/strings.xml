@@ -5,6 +5,6 @@
     <string name="inputDescription">описание</string>
     <string name="inputLogin">логин</string>
     <string name="inputPass">пароль</string>
-    <string name="inputSiteName">inputSiteName</string>
+    <string name="inputSiteName">название сайта</string>
     <string name="confirmButton">создать</string>
 </resources>
