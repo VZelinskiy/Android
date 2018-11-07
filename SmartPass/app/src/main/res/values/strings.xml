@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">SmartPass</string>
-    <string name="addButton">Добавить аккаунт</string>
+    <string name="addButton">добавить аккаунт</string>
+    <string name="inputSiteAddress">адрес сайта</string>
+    <string name="inputDescription">описание</string>
+    <string name="inputLogin">логин</string>
+    <string name="inputPass">пароль</string>
+    <string name="inputSiteName">inputSiteName</string>
+    <string name="confirmButton">создать</string>
 </resources>
