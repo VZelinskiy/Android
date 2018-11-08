@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_orange_light"
-        android:text="@string/addButton" />
+        android:text="@string/addButton"
+        android:onClick="addButton"/>
 
     <ListView
         android:id="@+id/accountList"
