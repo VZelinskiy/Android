@@ -71,8 +71,15 @@ public class AccountDB extends SQLiteOpenHelper{
     public Cursor selectSiteNames(){
         String[] cols = new String[] {ID, SITE_NAME};
         Cursor cursor = database.query(true, TABLE_NAME, cols, null, null, null, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor != null && cursor.moveToFirst()) {
+
+            int idIndex = cursor.getColumnIndexOrThrow("_id");
+            int nameIndex = cursor.getColumnIndexOrThrow("siteName");
+            long id = cursor.getLong(idIndex);
+            String name = cursor.getString(nameIndex);
+
+            String str = id + name;
+            Log.d("myLog", str);
         }
         return cursor;
     }

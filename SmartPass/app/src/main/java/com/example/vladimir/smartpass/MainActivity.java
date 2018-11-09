@@ -1,8 +1,5 @@
 package com.example.vladimir.smartpass;
 
-import java.io.Serializable;
-import java.util.concurrent.TimeUnit;
-
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -35,6 +32,11 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
         findUIComponents();
         loadAccountsList();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
     }
 
@@ -43,8 +45,8 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         accountDB.openToRead();
 
         String[] from = new String[]{accountDB.SITE_NAME};
-        int[] to = new int[] {android.R.id.text1};
-        cursorAdapter = new SimpleCursorAdapter(this, R.layout.activity_main, cursor, from, to);
+        int[] to = new int[] {R.id.itemText};
+        cursorAdapter = new SimpleCursorAdapter(this, R.layout.item, null, from, to, 0);
         accountList.setAdapter(cursorAdapter);
 
         getSupportLoaderManager().initLoader(0, null, this);
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
         return new MyCursorLoader(this, accountDB);
+
     }
 
     @Override
