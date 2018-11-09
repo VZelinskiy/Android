@@ -31,18 +31,33 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         setContentView(R.layout.activity_main);
 
         findUIComponents();
+        initDB();
         loadAccountsList();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
-    public void loadAccountsList() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getSupportLoaderManager().getLoader(0).forceLoad();
+    }
+
+    private void initDB() {
         accountDB = new AccountDB(this);
         accountDB.openToRead();
+    }
+
+
+    public void loadAccountsList() {
 
         String[] from = new String[]{accountDB.SITE_NAME};
         int[] to = new int[] {R.id.itemText};
@@ -65,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
     protected void onDestroy(){
         super.onDestroy();
-        //accountDB.close();
+        accountDB.close();
     }
 
     @NonNull
@@ -82,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        cursorAdapter.swapCursor(null);
     }
 
     static class MyCursorLoader extends CursorLoader {

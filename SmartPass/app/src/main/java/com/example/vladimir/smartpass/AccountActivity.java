@@ -1,7 +1,12 @@
 package com.example.vladimir.smartpass;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.CharArrayBuffer;
+import android.database.ContentObserver;
 import android.database.Cursor;
+import android.database.DataSetObserver;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -59,7 +64,6 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
         String pass = inputPass.getText().toString();
 
         accountDB.addRec(siteName, siteAddress, desc, login, pass);
-
         finish();
     }
 
@@ -77,7 +81,7 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-
+        cursorAdapter.swapCursor(null);
     }
 
     static class MyCursorLoader extends CursorLoader {
@@ -90,7 +94,7 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
 
         @Override
         public Cursor loadInBackground() {
-            Cursor cursor = accountDB.selectSiteNames();
+            Cursor cursor = null;
 
             return cursor;
         }
