@@ -23,13 +23,14 @@ import android.widget.SimpleCursorAdapter;
 public class AccountActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
     private AccountDB accountDB;
     private Button confirmButton;
-    private TextInputEditText inputSiteName;
-    private TextInputEditText inputSiteAddress;
-    private TextInputEditText inputDescription;
-    private TextInputEditText inputLogin;
-    private TextInputEditText inputPass;
-    private SimpleCursorAdapter cursorAdapter;
+    private static TextInputEditText inputSiteName;
+    private static TextInputEditText inputSiteAddress;
+    private static TextInputEditText inputDescription;
+    private static TextInputEditText inputLogin;
+    private static TextInputEditText inputPass;
+    private static SimpleCursorAdapter cursorAdapter;
     private static long accountId;
+    private static Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +40,39 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
         FindUIComponents();
         InitDB();
 
-        initAccountID();
         getSupportLoaderManager().initLoader(0, null, this);
+        initAccount();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
     }
 
-    private void initAccountID() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (accountId != 0){
+            setInputTextFields(cursor);
+        }
+
+    }
+
+    private void initAccount() {
         Intent intent = getIntent();
         accountId = intent.getLongExtra("id", 0);
+
+    }
+
+    private void setInputTextFields(Cursor cursor) {
+        if (cursor.moveToFirst()) {
+            inputSiteName.setText(cursor.getString(cursor.getColumnIndex(accountDB.SITE_NAME)));
+            inputSiteAddress.setText(cursor.getString(cursor.getColumnIndex(accountDB.SITE_ADDRESS)));
+            inputDescription.setText(cursor.getString(cursor.getColumnIndex(accountDB.DESCRIPTION)));
+            inputLogin.setText(cursor.getString(cursor.getColumnIndex(accountDB.LOGIN)));
+            inputPass.setText(cursor.getString(cursor.getColumnIndex(accountDB.PASS)));
+        }
     }
 
     private void InitDB() {
@@ -125,8 +151,7 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
                 return null;
             }
             else {
-                Cursor cursor = accountDB.selectAccountById(accountId);
-
+                cursor = accountDB.selectAccountById(accountId);
                 return cursor;
             }
 

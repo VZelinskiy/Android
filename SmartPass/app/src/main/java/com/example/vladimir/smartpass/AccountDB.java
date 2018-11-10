@@ -74,7 +74,7 @@ public class AccountDB extends SQLiteOpenHelper{
 
         if (cursor.moveToFirst()) {
             do {
-                String temp = cursor.getString(cursor.getColumnIndex(ID)); // "Title" is the field name(column) of the Table
+                String temp = cursor.getString(cursor.getColumnIndex(ID));
             } while (cursor.moveToNext());
         }
         return cursor;
