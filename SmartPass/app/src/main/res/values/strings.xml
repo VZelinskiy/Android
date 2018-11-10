@@ -8,4 +8,5 @@
     <string name="inputSiteName">название сайта</string>
     <string name="confirmButton">сохранить</string>
     <string name="deleteButton">удалить</string>
+    <string name="EncryptPass">шифровать пароль</string>
 </resources>
