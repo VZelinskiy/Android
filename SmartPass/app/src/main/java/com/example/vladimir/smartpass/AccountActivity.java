@@ -48,11 +48,6 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
         initAccount();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
 
     @Override
     protected void onResume() {
@@ -97,8 +92,6 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
         accountDB.close();
     }
 
-
-
     private void FindUIComponents() {
         confirmButton = findViewById(R.id.confirmButton);
         inputSiteName = findViewById(R.id.inputSiteName);
@@ -109,12 +102,27 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
         isEncryptPass = findViewById(R.id.isEncryptPass);
     }
 
+    public boolean isSiteNameValid(String siteName){
+        if (siteName.isEmpty()){
+            inputSiteName.setError("Поле не может быть пустым");
+            return false;
+        }
+        else {
+            inputSiteName.setError(null);
+            return true;
+        }
+    }
+
     public void addButton(View view) {
-        String siteAddress = inputSiteAddress.getText().toString();
-        String siteName = inputSiteName.getText().toString();
-        String desc = inputDescription.getText().toString();
-        String login = inputLogin.getText().toString();
-        String pass = inputPass.getText().toString();
+        String siteAddress = inputSiteAddress.getText().toString().trim();
+        String siteName = inputSiteName.getText().toString().trim();
+        String desc = inputDescription.getText().toString().trim();
+        String login = inputLogin.getText().toString().trim();
+        String pass = inputPass.getText().toString().trim();
+
+        if (isSiteNameValid(siteName) == false){
+            return;
+        }
 
         if (isEncryptPass.isChecked()){
             String newpass = encryptor.encrypt(pass);
