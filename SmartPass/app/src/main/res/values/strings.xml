@@ -7,4 +7,5 @@
     <string name="inputPass">пароль</string>
     <string name="inputSiteName">название сайта</string>
     <string name="confirmButton">создать</string>
+    <string name="deleteButton">Удалить</string>
 </resources>

@@ -64,23 +64,29 @@ public class AccountDB extends SQLiteOpenHelper{
         database.insert(TABLE_NAME, null, contentValues);
     }
 
-    public void delRec(){
-
+    public void delRec(long id){
+        database.delete(TABLE_NAME, ID + " = " + id, null);
     }
 
     public Cursor selectSiteNames(){
         String[] cols = new String[] {ID, SITE_NAME};
         Cursor cursor = database.query(true, TABLE_NAME, cols, null, null, null, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
 
-            int idIndex = cursor.getColumnIndexOrThrow("_id");
-            int nameIndex = cursor.getColumnIndexOrThrow("siteName");
-            long id = cursor.getLong(idIndex);
-            String name = cursor.getString(nameIndex);
-
-            String str = id + name;
-            Log.d("myLog", str);
+        if (cursor.moveToFirst()) {
+            do {
+                String temp = cursor.getString(cursor.getColumnIndex(ID)); // "Title" is the field name(column) of the Table
+            } while (cursor.moveToNext());
         }
+        return cursor;
+    }
+
+    public Cursor selectAccountById(long id){
+        String[] cols = new String[] {ID, SITE_NAME, SITE_ADDRESS, DESCRIPTION, LOGIN, PASS};
+        String selection = ID + " = ?";
+        String strId = Long.toString(id);
+        String[] selectionArgs = new String[] {strId};
+        Cursor cursor = database.query(true, TABLE_NAME, cols, selection, selectionArgs, null, null, null, null);
+
         return cursor;
     }
 }

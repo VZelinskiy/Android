@@ -2,6 +2,7 @@ package com.example.vladimir.smartpass;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.CharArrayBuffer;
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -28,6 +29,7 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
     private TextInputEditText inputLogin;
     private TextInputEditText inputPass;
     private SimpleCursorAdapter cursorAdapter;
+    private static long accountId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +37,21 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
         setContentView(R.layout.account);
 
         FindUIComponents();
+        InitDB();
 
+        initAccountID();
+        getSupportLoaderManager().initLoader(0, null, this);
+
+    }
+
+    private void initAccountID() {
+        Intent intent = getIntent();
+        accountId = intent.getLongExtra("id", 0);
+    }
+
+    private void InitDB() {
         accountDB = new AccountDB(this);
         accountDB.openToWrite();
-        //getSupportLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -46,6 +59,8 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
         super.onDestroy();
         accountDB.close();
     }
+
+
 
     private void FindUIComponents() {
         confirmButton = findViewById(R.id.confirmButton);
@@ -71,17 +86,29 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        return new MainActivity.MyCursorLoader(this, accountDB);
+        return new MyCursorLoader(this, accountDB);
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        cursorAdapter.swapCursor(data);
+        if (cursorAdapter != null) {
+            cursorAdapter.swapCursor(data);
+        }
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         cursorAdapter.swapCursor(null);
+    }
+
+    public void deleteButton(View view) {
+        if (accountId == 0){
+            return;
+        }
+
+        accountDB.delRec(accountId);
+
+        finish();
     }
 
     static class MyCursorLoader extends CursorLoader {
@@ -94,9 +121,15 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
 
         @Override
         public Cursor loadInBackground() {
-            Cursor cursor = null;
+            if (accountId == 0){
+                return null;
+            }
+            else {
+                Cursor cursor = accountDB.selectAccountById(accountId);
 
-            return cursor;
+                return cursor;
+            }
+
         }
     }
 }

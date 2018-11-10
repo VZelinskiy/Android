@@ -9,7 +9,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -64,6 +66,17 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         cursorAdapter = new SimpleCursorAdapter(this, R.layout.item, null, from, to, 0);
         accountList.setAdapter(cursorAdapter);
 
+        accountList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+            {
+                Intent intent = new Intent(MainActivity.this, AccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("id", id);
+                startActivity(intent);
+            }
+        });
+
         getSupportLoaderManager().initLoader(0, null, this);
     }
 
@@ -99,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         cursorAdapter.swapCursor(null);
     }
+
 
     static class MyCursorLoader extends CursorLoader {
         AccountDB accountDB;
