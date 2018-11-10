@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.widget.CheckBox;
 import android.widget.SimpleCursorAdapter;
 
 public class AccountActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
@@ -28,9 +29,11 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
     private static TextInputEditText inputDescription;
     private static TextInputEditText inputLogin;
     private static TextInputEditText inputPass;
+    private static CheckBox isEncryptPass;
     private static SimpleCursorAdapter cursorAdapter;
     private static long accountId;
     private static Cursor cursor;
+    private Encryptor encryptor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
 
         FindUIComponents();
         InitDB();
+        encryptor = new Encryptor();
 
         getSupportLoaderManager().initLoader(0, null, this);
         initAccount();
@@ -71,7 +75,14 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
             inputSiteAddress.setText(cursor.getString(cursor.getColumnIndex(accountDB.SITE_ADDRESS)));
             inputDescription.setText(cursor.getString(cursor.getColumnIndex(accountDB.DESCRIPTION)));
             inputLogin.setText(cursor.getString(cursor.getColumnIndex(accountDB.LOGIN)));
-            inputPass.setText(cursor.getString(cursor.getColumnIndex(accountDB.PASS)));
+            String passStr = cursor.getString(cursor.getColumnIndex(accountDB.PASS));
+
+            if (isEncryptPass.isChecked()){
+                inputPass.setText(encryptor.decrypt(passStr));
+            }
+            else {
+                inputPass.setText(passStr);
+            }
         }
     }
 
@@ -95,6 +106,7 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
         inputDescription = findViewById(R.id.inputDescription);
         inputLogin = findViewById(R.id.inputLogin);
         inputPass = findViewById(R.id.inputPass);
+        isEncryptPass = findViewById(R.id.isEncryptPass);
     }
 
     public void addButton(View view) {
@@ -103,6 +115,11 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
         String desc = inputDescription.getText().toString();
         String login = inputLogin.getText().toString();
         String pass = inputPass.getText().toString();
+
+        if (isEncryptPass.isChecked()){
+            String newpass = encryptor.encrypt(pass);
+            pass = newpass;
+        }
 
         if (accountId == 0){
             accountDB.addRec(siteName, siteAddress, desc, login, pass);
