@@ -89,4 +89,14 @@ public class AccountDB extends SQLiteOpenHelper{
 
         return cursor;
     }
+
+    public void updateRec(long id, String siteName, String siteAddress, String description, String login, String pass) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(SITE_NAME, siteName);
+        contentValues.put(SITE_ADDRESS, siteAddress);
+        contentValues.put(DESCRIPTION, description);
+        contentValues.put(LOGIN, login);
+        contentValues.put(PASS, pass);
+        database.update(TABLE_NAME, contentValues, ID + " = ?", new String[] { Long.toString(id) });
+    }
 }

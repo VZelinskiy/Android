@@ -104,7 +104,13 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
         String login = inputLogin.getText().toString();
         String pass = inputPass.getText().toString();
 
-        accountDB.addRec(siteName, siteAddress, desc, login, pass);
+        if (accountId == 0){
+            accountDB.addRec(siteName, siteAddress, desc, login, pass);
+        }
+        else {
+            accountDB.updateRec(accountId, siteName, siteAddress, desc, login, pass);
+        }
+
         finish();
     }
 
